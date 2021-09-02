@@ -68,6 +68,8 @@ gem "unicorn"
 gem "lograge"
 gem "rollbar"
 
+gem "version"
+
 # Storage to minio service
 gem "aws-sdk-s3", require: false
 

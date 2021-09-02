@@ -9,6 +9,7 @@
 
   <%= stylesheet_link_tag "doorkeeper/admin/application" %>
   <%= stylesheet_link_tag "application" %>
+  <%= stylesheet_link_tag "https://cdn.datatables.net/1.11.0/css/dataTables.bootstrap4.min.css" %>
 
   <%= javascript_include_tag 'application' %>
   <script
@@ -16,6 +17,9 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"
   ></script>
+
+  <script src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.0/js/dataTables.bootstrap4.min.js"></script>
 
   <%= csrf_meta_tags %>
 </head>
@@ -81,6 +85,18 @@
   <% end -%>
 
   <%= yield %>
+</div>
+
+<div class="footer mt-5">
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <%= link_to "Version: #{Version.current}", root_path, class: 'nav-link' %>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </div>
 </body>
 </html>

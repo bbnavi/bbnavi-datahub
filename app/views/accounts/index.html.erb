@@ -52,12 +52,17 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
 
     <h1>Nutzerverwaltung</h1>
 
     <p><%= link_to "Neuen Nutzer erstellen", new_account_path, class: 'btn btn-success' %></p>
 
-    <table class="table table-striped">
+    <table id="user_accounts" class="table table-striped">
       <thead>
         <tr>
           <th>ID</th>
@@ -123,3 +128,9 @@
     </table>
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#user_accounts').DataTable();
+} );
+</script>
