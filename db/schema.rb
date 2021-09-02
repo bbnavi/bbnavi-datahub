@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_30_095926) do
+ActiveRecord::Schema.define(version: 2021_09_02_141709) do
 
   create_table "accessibility_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
@@ -508,6 +508,7 @@ ActiveRecord::Schema.define(version: 2021_08_30_095926) do
     t.integer "role", default: 0
     t.text "authentication_token"
     t.datetime "authentication_token_created_at"
+    t.datetime "business_account_outdated_notification_sent_at"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, length: 255
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
