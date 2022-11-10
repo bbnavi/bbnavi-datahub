@@ -1,3 +1,3 @@
-FROM urbica/martin
+FROM maplibre/martin
 
 COPY docker/martin_config.yml /martin_config.yml
