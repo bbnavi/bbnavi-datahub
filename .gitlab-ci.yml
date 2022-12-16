@@ -3,7 +3,7 @@ image: nixos/nix:2.2.1
 variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_AUTH_CONFIG: '{ "auths": { "https://index.docker.io/v1/": { "auth": "$DOCKER_AUTH" } }}'
-  TARGET_HOST: datahub.bbnavi.de
+  TARGET_HOST: staging.datahub.bbnavi.de
 
 services:
   - docker:dind

@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
   prep-martin:
@@ -41,7 +41,7 @@ jobs:
         cache-from: |
           type=registry,ref=registry.gitlab.tpwd.de/tpwd/bb-navi/datahub
         push: true
-        tags: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+        tags: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
   deploy:
     runs-on: ubuntu-latest
     needs:
@@ -51,7 +51,7 @@ jobs:
       QUANTUM_USER: ${{ secrets.QUANTUM_USER }}
       QUANTUM_PASSWORD: ${{ secrets.QUANTUM_PASSWORD }}
       QUANTUM_ENDPOINT: "tpwd-bb-navi"
-      QUANTUM_STACK: "bbnavi-datahub"
+      QUANTUM_STACK: "bbnavi-datahub-staging"
     steps:
       - uses: actions/checkout@v2
       - name: Deploy to Planetary Quantum

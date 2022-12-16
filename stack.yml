@@ -4,7 +4,7 @@ services:
   tile_server:
     image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:tileserver
     ports:
-      - 5000:5000
+      - 5001:5000
     deploy:
       restart_policy:
         condition: on-failure
@@ -13,12 +13,12 @@ services:
         - node.hostname == node-001.tpwd-bb-navi
       labels:
         traefik.enable: "true"
-        traefik.port: 5000
+        traefik.port: 5001
         traefik.docker.network: public
-        traefik.frontend.rule: Host:tiles.bbnavi.de
+        traefik.frontend.rule: Host:staging.tiles.bbnavi.de
 
   delayed_job:
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     networks:
       - default
       - bbnavi-redis-server
@@ -27,7 +27,7 @@ services:
       RAILS_LOG_TO_STDOUT: 1
 
   cron_job:
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     networks:
       - default
       - public
@@ -49,7 +49,7 @@ services:
         - node.hostname == node-001.tpwd-bb-navi
 
   app:
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     networks:
       - default
       - bbnavi-redis-server
@@ -63,7 +63,7 @@ services:
         traefik.enable: "true"
         traefik.port: 80
         traefik.docker.network: public
-        traefik.frontend.rule: Host:datahub.bbnavi.de
+        traefik.frontend.rule: Host:staging.datahub.bbnavi.de
 
   db:
     networks:
@@ -72,37 +72,38 @@ services:
         aliases:
           - int-development-mainserver
 
-  ssh-server:
-    deploy:
-      labels:
-        traefik.docker.network: public
-        traefik.enable: "true"
-        traefik.frontend.passHostHeader: "true"
-        traefik.frontend.redirect.entryPoint: https
-        traefik.frontend.rule: Host:ssh.datahub.bbnavi.de
-        traefik.port: '80'
-      replicas: 0
-      restart_policy:
-        condition: on-failure
-    environment:
-      DOCKER_MODS: linuxserver/mods:openssh-server-ssh-tunnel
-      PGID: '0'
-      PUBLIC_KEY_DIR: /public_keys
-      PUID: '0'
-      SUDO_ACCESS: "true"
-      TZ: Europe/Berlin
-      USER_NAME: bbnavi
-    expose:
-    - '5432'
-    image: ghcr.io/linuxserver/openssh-server
-    networks:
-      public: {}
-      bbnavi-datahub-postgresql: {}
-    volumes:
-      - ssh_public_keys:/public_keys:rw
-    ports:
-    - published: 2222
-      target: 2222
+  # Wird beim Stagingservice erstmal nicht benötigt
+  # ssh-server:
+  #   deploy:
+  #     labels:
+  #       traefik.docker.network: public
+  #       traefik.enable: "true"
+  #       traefik.frontend.passHostHeader: "true"
+  #       traefik.frontend.redirect.entryPoint: https
+  #       traefik.frontend.rule: Host:staging.ssh.datahub.bbnavi.de
+  #       traefik.port: '80'
+  #     replicas: 0
+  #     restart_policy:
+  #       condition: on-failure
+  #   environment:
+  #     DOCKER_MODS: linuxserver/mods:openssh-server-ssh-tunnel
+  #     PGID: '0'
+  #     PUBLIC_KEY_DIR: /public_keys
+  #     PUID: '0'
+  #     SUDO_ACCESS: "true"
+  #     TZ: Europe/Berlin
+  #     USER_NAME: bbnavi
+  #   expose:
+  #   - '5432'
+  #   image: ghcr.io/linuxserver/openssh-server
+  #   networks:
+  #     public: {}
+  #     bbnavi-datahub-postgresql: {}
+  #   volumes:
+  #     - ssh_public_keys:/public_keys:rw
+  #   ports:
+  #   - published: 2222
+  #     target: 2222
 
 networks:
   adminer:

@@ -10,7 +10,7 @@ services:
     #   - source: martin-config-yml-2022-05-19
     #     target: /martin_config.yml
     networks:
-      - bbnavi-datahub-postgresql
+      - bbnavi-datahub-postgresql-staging
       - public
 
   redis:
@@ -23,13 +23,13 @@ services:
         aliases:
         - bbnavi-redis-server
     volumes:
-     - redis_data:/bitnami/redis/data:rw
+     - redis_data_staging:/bitnami/redis/data:rw
 
   delayed_job:
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     command: bin/delayed_job run
     networks:
-      - bbnavi-datahub-postgresql
+      - bbnavi-datahub-postgresql-staging
       - bbnavi-redis-server
     environment:
       SVA_COMMUNITY: bbnavi
@@ -51,14 +51,14 @@ services:
         - node.hostname == node-001.tpwd-bb-navi
 
   cron_job:
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     command: bin/start-cron.sh
     environment:
       SVA_COMMUNITY: bbnavi
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
     networks:
-      - bbnavi-datahub-postgresql
+      - bbnavi-datahub-postgresql-staging
       - bbnavi-redis-server
     configs:
       - source: mainserver-common-master-key
@@ -76,7 +76,7 @@ services:
         - node.hostname == node-001.tpwd-bb-navi
 
   app:
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     environment:
       SVA_COMMUNITY: bbnavi
       RAILS_ENV: production
@@ -90,7 +90,7 @@ services:
       - unicorn:/unicorn
       - assets:/assets
     networks:
-      - bbnavi-datahub-postgresql
+      - bbnavi-datahub-postgresql-staging
       - bbnavi-redis-server
     deploy:
       restart_policy:
@@ -119,16 +119,17 @@ services:
     # image: 'postgres:10.3-alpine'
     image: 'postgis/postgis:10-3.1'
     environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_USER: bbnavihub
       POSTGRES_PASSWORT: bbnavihub
       POSTGRES_DB: bbnavihub
       DATADIR: /var/lib/postgresql/data
     networks:
-      bbnavi-datahub-postgresql:
+      bbnavi-datahub-postgresql-staging:
         aliases:
-          - bbnavi-datahub-postgresql
+          - bbnavi-datahub-postgresql-staging
     volumes:
-      - datahub_db:/var/lib/postgresql/data
+      - datahub_db_staging:/var/lib/postgresql/data
     deploy:
       restart_policy:
         condition: on-failure
@@ -137,9 +138,9 @@ services:
         - node.hostname == node-001.tpwd-bb-navi
 
 volumes:
-  datahub_db:
+  datahub_db_staging:
     external: true
-  redis_data:
+  redis_data_staging:
     external: true
   unicorn:
   assets:
@@ -157,7 +158,7 @@ configs:
 networks:
   public:
     external: true
-  bbnavi-datahub-postgresql:
+  bbnavi-datahub-postgresql-staging:
     external: true
   bbnavi-redis-server:
     external: true

@@ -12,9 +12,9 @@ networks:
   adminer:
     external: true
     name: adminer
-  bbnavi-datahub-postgresql:
+  bbnavi-datahub-postgresql-staging:
     external: true
-    name: bbnavi-datahub-postgresql
+    name: bbnavi-datahub-postgresql-staging
   bbnavi-redis-server:
     external: true
     name: bbnavi-redis-server
@@ -41,9 +41,9 @@ services:
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
       SVA_COMMUNITY: bbnavi
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     networks:
-      bbnavi-datahub-postgresql: {}
+      bbnavi-datahub-postgresql-staging: {}
       bbnavi-redis-server: {}
       default: {}
     volumes:
@@ -72,9 +72,9 @@ services:
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
       SVA_COMMUNITY: bbnavi
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     networks:
-      bbnavi-datahub-postgresql: {}
+      bbnavi-datahub-postgresql-staging: {}
       bbnavi-redis-server: {}
       default: {}
       public: {}
@@ -91,6 +91,7 @@ services:
     environment:
       DATADIR: /var/lib/postgresql/data
       POSTGRES_DB: bbnavihub
+      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_PASSWORT: bbnavihub
       POSTGRES_USER: bbnavihub
     image: postgis/postgis:10-3.1
@@ -98,12 +99,12 @@ services:
       adminer:
         aliases:
         - int-development-mainserver
-      bbnavi-datahub-postgresql:
+      bbnavi-datahub-postgresql-staging:
         aliases:
-        - bbnavi-datahub-postgresql
+        - bbnavi-datahub-postgresql-staging
       default: {}
     volumes:
-    - datahub_db:/var/lib/postgresql/data:rw
+    - datahub_db_staging:/var/lib/postgresql/data:rw
   delayed_job:
     command: bin/delayed_job run
     configs:
@@ -121,9 +122,9 @@ services:
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: 1
       SVA_COMMUNITY: bbnavi
-    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:latest
+    image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:staging
     networks:
-      bbnavi-datahub-postgresql: {}
+      bbnavi-datahub-postgresql-staging: {}
       bbnavi-redis-server: {}
       default: {}
     volumes:
@@ -137,7 +138,7 @@ services:
       labels:
         traefik.docker.network: public
         traefik.enable: "true"
-        traefik.frontend.rule: Host:datahub.bbnavi.de
+        traefik.frontend.rule: Host:staging.datahub.bbnavi.de
         traefik.port: '80'
       placement:
         constraints:
@@ -161,46 +162,15 @@ services:
         aliases:
         - bbnavi-redis-server
     volumes:
-    - redis_data:/bitnami/redis/data:rw
-  ssh-server:
-    deploy:
-      labels:
-        traefik.docker.network: public
-        traefik.enable: "true"
-        traefik.frontend.passHostHeader: "true"
-        traefik.frontend.redirect.entryPoint: https
-        traefik.frontend.rule: Host:ssh.datahub.bbnavi.de
-        traefik.port: '80'
-      replicas: 0
-      restart_policy:
-        condition: on-failure
-    environment:
-      DOCKER_MODS: linuxserver/mods:openssh-server-ssh-tunnel
-      PGID: '0'
-      PUBLIC_KEY_DIR: /public_keys
-      PUID: '0'
-      SUDO_ACCESS: "true"
-      TZ: Europe/Berlin
-      USER_NAME: bbnavi
-    expose:
-    - '5432'
-    image: ghcr.io/linuxserver/openssh-server
-    networks:
-      bbnavi-datahub-postgresql: {}
-      public: {}
-    ports:
-    - published: 2222
-      target: 2222
-    volumes:
-    - ssh_public_keys:/public_keys:rw
+    - redis_data_staging:/bitnami/redis/data:rw
   tile_server:
     command: martin --config /martin_config.yml
     deploy:
       labels:
         traefik.docker.network: public
         traefik.enable: "true"
-        traefik.frontend.rule: Host:tiles.bbnavi.de
-        traefik.port: '5000'
+        traefik.frontend.rule: Host:staging.tiles.bbnavi.de
+        traefik.port: '5001'
       placement:
         constraints:
         - node.hostname == node-001.tpwd-bb-navi
@@ -210,20 +180,20 @@ services:
       DATABASE_URL: postgres://bbnavihub@bbnavi-datahub-postgresql/bbnavihub
     image: registry.gitlab.tpwd.de/tpwd/bb-navi/datahub:tileserver
     networks:
-      bbnavi-datahub-postgresql: {}
+      bbnavi-datahub-postgresql-staging: {}
       public: {}
     ports:
-    - published: 5000
+    - published: 5001
       target: 5000
 version: '3.7'
 volumes:
   assets: {}
-  datahub_db:
+  datahub_db_staging:
     external: true
-    name: datahub_db
-  redis_data:
+    name: datahub_db_staging
+  redis_data_staging:
     external: true
-    name: redis_data
+    name: redis_data_staging
   ssh_public_keys:
     external: true
     name: ssh_public_keys
