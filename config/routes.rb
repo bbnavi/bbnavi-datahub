@@ -40,6 +40,9 @@ Rails.application.routes.draw do
   }
 
   get "user" => "users/status#show"
+  namespace :cms do
+    get "form_configs/:resource_module/:category_id/fields", to: "form#fields"
+  end
 
   authenticate :user do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"

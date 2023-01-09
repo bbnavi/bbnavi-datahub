@@ -15,6 +15,15 @@ class Category < ApplicationRecord
 
   after_destroy :cleanup_data_resource_settings
 
+  store :form_configurations,
+        accessors: [
+          :point_of_interest_form,
+          # :news_item_form,
+          # :event_record_form
+          # ...
+        ],
+        coder: JSON
+
   def generic_items_count
     return 0 if generic_items.blank?
 
