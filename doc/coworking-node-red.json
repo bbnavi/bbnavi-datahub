@@ -1,0 +1,203 @@
+[
+  {
+      "id": "ab6e7a9fd5d492cd",
+      "type": "tab",
+      "label": "BBNavi -  Coworking Standorte",
+      "disabled": false,
+      "info": "",
+      "env": []
+  },
+  {
+      "id": "bd0a939c30ada5e0",
+      "type": "inject",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "",
+      "props": [
+          {
+              "p": "payload"
+          },
+          {
+              "p": "topic",
+              "vt": "str"
+          }
+      ],
+      "repeat": "",
+      "crontab": "",
+      "once": false,
+      "onceDelay": 0.1,
+      "topic": "",
+      "payload": "",
+      "payloadType": "date",
+      "x": 100,
+      "y": 80,
+      "wires": [
+          [
+              "447209db63da7db3"
+          ]
+      ]
+  },
+  {
+      "id": "447209db63da7db3",
+      "type": "http request",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "Load API Data",
+      "method": "GET",
+      "ret": "obj",
+      "paytoqs": "ignore",
+      "url": "https://services2.arcgis.com/Gvyo5E08In2FP0hC/arcgis/rest/services/survey123_3c2060a259024c68b6212c0eacb52077/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson",
+      "tls": "",
+      "persist": false,
+      "proxy": "",
+      "insecureHTTPParser": false,
+      "authType": "",
+      "senderr": false,
+      "headers": [],
+      "x": 280,
+      "y": 80,
+      "wires": [
+          [
+              "492a106ed8f7e98a"
+          ]
+      ]
+  },
+  {
+      "id": "0a27317aaa9d1c07",
+      "type": "debug",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "debug 9",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "true",
+      "targetType": "full",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 740,
+      "y": 300,
+      "wires": []
+  },
+  {
+      "id": "4bd66693b37cb2d7",
+      "type": "graphql",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "Send to Datahub",
+      "graphql": "f945a72287f9689a",
+      "format": "handlebars",
+      "syntax": "mustache",
+      "template": "mutation { \n    createPointOfInterest (\n      name: \"{{variables.name_coworking_space}}\", \n      categoryName: \"Coworking\",\n      addresses:[ {\n        city: \"{{variables.ort}}\",\n        street: \"{{variables.adresse}}\",\n        zip: \"{{variables.postleitzahl}}\",\n        kind: \"default\",\n      }],\n      contact: {        \n        webUrls:[\n          {\n            url: \"{{variables.webseite_coworking_space_url}}\",\n            description: \"url\"\n          }]\n        }\n) {id, name} }",
+      "showDebug": true,
+      "x": 650,
+      "y": 240,
+      "wires": [
+          [
+              "0a27317aaa9d1c07"
+          ],
+          [
+              "0a27317aaa9d1c07"
+          ]
+      ]
+  },
+  {
+      "id": "bb7a8eee88abeba6",
+      "type": "oauth2",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "Datahub Auth",
+      "container": "oauth2Response",
+      "access_token_url": "https://server.int-development.smart-village.app/oauth/token",
+      "grant_type": "client_credentials",
+      "username": "",
+      "password": "",
+      "client_id": "W1R8Y9qLUQRaWkRckPPsXrxUIzT_Z8nHIOi5TbzwZPA",
+      "client_secret": "YVWioN9375VJRC8eVKAIB6lDqvKzDMWW8OMyN5gpzNA",
+      "scope": "",
+      "rejectUnauthorized": false,
+      "headers": {},
+      "x": 580,
+      "y": 80,
+      "wires": [
+          [
+              "6a149ccef739edda"
+          ]
+      ]
+  },
+  {
+      "id": "6a149ccef739edda",
+      "type": "json",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "Get Access Token",
+      "property": "payload",
+      "action": "obj",
+      "pretty": false,
+      "x": 770,
+      "y": 160,
+      "wires": [
+          [
+              "c5de8ff577e631bb"
+          ]
+      ]
+  },
+  {
+      "id": "c5de8ff577e631bb",
+      "type": "template",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "Create Bearer Token",
+      "field": "authorization",
+      "fieldType": "msg",
+      "format": "handlebars",
+      "syntax": "mustache",
+      "template": "Bearer {{oauth2Response.access_token}}",
+      "output": "str",
+      "x": 1040,
+      "y": 160,
+      "wires": [
+          [
+              "83579e2f8b1ee108"
+          ]
+      ]
+  },
+  {
+      "id": "492a106ed8f7e98a",
+      "type": "function",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "Store in coworkingData",
+      "func": "msg.coworkingData = msg.payload; \nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 430,
+      "y": 160,
+      "wires": [
+          [
+              "bb7a8eee88abeba6"
+          ]
+      ]
+  },
+  {
+      "id": "83579e2f8b1ee108",
+      "type": "function",
+      "z": "ab6e7a9fd5d492cd",
+      "name": "Do while",
+      "func": "for (var i = 0; i < msg.coworkingData.features.length; i++) {\n    msg.variables = msg.coworkingData.features[i].properties;\n    node.send(msg);\n    msg.variables = null\n}\nreturn null;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 200,
+      "y": 240,
+      "wires": [
+          [
+              "4bd66693b37cb2d7"
+          ]
+      ]
+  },
+  {
+      "id": "f945a72287f9689a",
+      "type": "graphql-server",
+      "name": "Stagingserver",
+      "endpoint": "https://server.int-development.smart-village.app/graphql"
+  }
+]
