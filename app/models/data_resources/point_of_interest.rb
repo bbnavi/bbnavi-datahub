@@ -7,6 +7,8 @@
 class PointOfInterest < Attraction
   include FilterByRole
 
+  BLACKLISTED_FORM_FIELDS_FOR_CMS = [:id, :visible, :created_at, :updated_at, :category, :settings, :active, :data_provider].freeze
+
   attr_accessor :force_create
 
   belongs_to :data_provider
