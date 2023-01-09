@@ -34,6 +34,27 @@
     </small>
   </div>
 
+  <div class="form-group">
+    <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
+    <%= link_to t("doorkeeper.applications.buttons.cancel"), categories_path, class: "btn btn-default" %>
+  </div>
+
+  <% Category.stored_attributes[:form_configurations].each do |form_configuration| %>
+    <% form_configuration_name = form_configuration.to_s.sub("_form", "") %>
+    <% form_configuration_class = form_configuration_name.classify %>
+
+    <h4>Folgende Formularfelder im CMS für <%= form_configuration_name.humanize %> Einträge <strong>ausblenden</strong>:</h4>
+
+    <% "::Types::QueryTypes::#{form_configuration_class}Type".constantize.fields.each do |poi_field_name, poi_field_options| %>
+      <% poi_field_name = poi_field_name.underscore %>
+      <% next if form_configuration_class.constantize.const_defined?("BLACKLISTED_FORM_FIELDS_FOR_CMS") && form_configuration_class.constantize::BLACKLISTED_FORM_FIELDS_FOR_CMS.include?(poi_field_name.to_sym) %>
+      <div class="form-check">
+        <%= check_box_tag "category[#{form_configuration}][#{poi_field_name}]", "true", form.object.try(form_configuration).try(:fetch, poi_field_name, "false") == "true", { class: "form-check-input"} %>
+        <%= label_tag "category[#{form_configuration}][#{poi_field_name}]", poi_field_name.humanize(keep_id_suffix: true), class: "form-check-label" %>
+      </div>
+    <% end %>
+    <hr>
+  <% end %>
 
   <div class="form-group">
     <%= form.submit t("doorkeeper.applications.buttons.submit"), class: "btn btn-primary" %>
