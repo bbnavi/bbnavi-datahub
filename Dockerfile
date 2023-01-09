@@ -25,7 +25,7 @@ WORKDIR /app
 
 COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler
-RUN bundle install
+RUN bundle install --without development test
 
 COPY . /app
 RUN chmod +x bin/start-cron.sh
