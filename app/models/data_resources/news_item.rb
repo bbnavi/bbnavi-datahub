@@ -5,6 +5,8 @@
 class NewsItem < ApplicationRecord
   include FilterByRole
 
+  BLACKLISTED_FORM_FIELDS_FOR_CMS = [:id, :visible, :created_at, :updated_at, :active, :data_provider, :settings].freeze
+
   attr_accessor :force_create
   attr_accessor :category_name
   attr_accessor :category_names
