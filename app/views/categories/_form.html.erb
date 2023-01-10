@@ -48,10 +48,25 @@
     <% "::Types::QueryTypes::#{form_configuration_class}Type".constantize.fields.each do |poi_field_name, poi_field_options| %>
       <% poi_field_name = poi_field_name.underscore %>
       <% next if form_configuration_class.constantize.const_defined?("BLACKLISTED_FORM_FIELDS_FOR_CMS") && form_configuration_class.constantize::BLACKLISTED_FORM_FIELDS_FOR_CMS.include?(poi_field_name.to_sym) %>
+
       <div class="form-check">
         <%= check_box_tag "category[#{form_configuration}][#{poi_field_name}]", "true", form.object.try(form_configuration).try(:fetch, poi_field_name, "false") == "true", { class: "form-check-input"} %>
-        <%= label_tag "category[#{form_configuration}][#{poi_field_name}]", poi_field_name.humanize(keep_id_suffix: true), class: "form-check-label" %>
+        <%= label_tag "category[#{form_configuration}][#{poi_field_name}]",
+              poi_field_name.humanize(keep_id_suffix: true),
+              class: "form-check-label" %>
       </div>
+
+      <% poi_field_options_type = poi_field_options.type.list? ? poi_field_options.type.of_type.of_type : poi_field_options.type %>
+      <% if poi_field_options_type.to_s.include?("QueryTypes") %>
+        <ul>
+          <% poi_field_options_type.fields.each do |poi_sub_field_name, poi_sub_options| %>
+            <li>
+              <%= check_box_tag "category[#{form_configuration}][#{poi_field_name}__#{poi_sub_field_name}]", "true", form.object.try(form_configuration).try(:fetch, "#{poi_field_name}__#{poi_sub_field_name}", "false") == "true", { class: "form-check-input"} %>
+              <%= poi_sub_field_name %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
     <% end %>
     <hr>
   <% end %>

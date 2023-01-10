@@ -19,11 +19,22 @@ class Cms::FormController < ApplicationController
       form_fields = form_fields - resource_module.classify.constantize::BLACKLISTED_FORM_FIELDS_FOR_CMS.map(&:to_s)
     end
 
+    exclude_fields_attributes = exclude_fields.inject({}) do |hash, element|
+      if element.include?("__")
+        key, value = element.split("__")
+        hash[key] ||= []
+        hash[key] << value
+      end
+      hash
+    end
+
     respond_to do |format|
       format.json do
         return render json: {
           success: true,
-          form_fields: form_fields
+          form_fields: form_fields,
+          exclude_form_fields: exclude_fields.select{ |field_name| !field_name.include?("__") },
+          exclude_form_field_attributes: exclude_fields_attributes
         }
       end
     end
