@@ -4,6 +4,8 @@ require_relative "../loaders/directus_loader"
 
 module Types
   class QueryType < Types::BaseObject
+    field :dashboard, QueryTypes::DashboardType, null: false
+
     field :generic_items, function: Resolvers::GenericItemSearch
     field :generic_item, QueryTypes::GenericItemType, null: false do
       argument :id, ID, required: true
@@ -71,6 +73,10 @@ module Types
     end
 
     field :surveys, [QueryTypes::SurveyPollType], function: Resolvers::SurveyPollsSearch
+
+    def dashboard
+      {}
+    end
 
     def weather_map(id: nil)
       return OpenWeatherMap.find_by(id: id) if id.present?
