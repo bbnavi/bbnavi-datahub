@@ -29,6 +29,7 @@ class Resolvers::PointsOfInterestSearch
   option :dataProvider, type: types.String, with: :apply_data_provider
   option :dataProviderId, type: types.ID, with: :apply_data_provider_id
   option :descendants, type: types.String, with: :apply_descendants
+  option :descendantId, type: types.String, with: :apply_descendant_id
   option :category, type: types.String, with: :apply_category
   option :categoryId, type: types.ID, with: :apply_category_id
   option :categoryIds, type: types[types.ID], with: :apply_category_ids
@@ -60,6 +61,11 @@ class Resolvers::PointsOfInterestSearch
 
   def apply_descendants(scope, value)
     category_ids = Category.where(name: value).first.descendant_ids
+    scope.by_category(category_ids)
+  end
+
+  def apply_descendant_id(scope, value)
+    category_ids = Category.where(id: value).first.descendant_ids
     scope.by_category(category_ids)
   end
 
