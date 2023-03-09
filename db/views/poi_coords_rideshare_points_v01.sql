@@ -10,5 +10,6 @@
      JOIN categories ON categories.id = data_resource_categories_attractions_join.category_id
      JOIN data_resource_categories ON attractions.id = data_resource_categories.data_resource_id
   WHERE attractions.type::text = 'PointOfInterest'::text
+    AND attractions.visible = true
     AND (data_resource_categories.category_id = 101 OR data_resource_categories.category_id = 102 OR data_resource_categories.category_id = 103 OR data_resource_categories.category_id = 104)
     AND data_resource_categories.data_resource_type::text = 'PointOfInterest'::text;

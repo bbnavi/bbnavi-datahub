@@ -2,6 +2,8 @@ json.type "FeatureCollection"
 json.features do
   json.array! @rideshare_points.each do |rideshare_point|
     address = rideshare_point.addresses.first
+    next if address.blank? || address.geo_location.blank? || address.geo_location.coordinates.blank?
+
     json.type "Feature"
     json.id rideshare_point.external_id
     json.properties do
