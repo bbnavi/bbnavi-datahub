@@ -11,7 +11,8 @@ class Cms::FormController < ApplicationController
     form_fields = "::Types::QueryTypes::#{resource_module.classify}Type".constantize.fields.keys.map(&:underscore)
 
     # Entferne alle Felder die in einer Kategorie unerwünscht sind
-    exclude_fields = category.send("#{resource_module}_form").select { |_key, value| value == "true" }.keys
+    exclude_fields = []
+    exclude_fields = category.send("#{resource_module}_form").select { |_key, value| value == "true" }.keys if category.send("#{resource_module}_form").present?
     form_fields = form_fields - exclude_fields if exclude_fields.any?
 
     # Entferne alle Felder, die in diesem Model generell unerwünscht sind
@@ -19,13 +20,16 @@ class Cms::FormController < ApplicationController
       form_fields = form_fields - resource_module.classify.constantize::BLACKLISTED_FORM_FIELDS_FOR_CMS.map(&:to_s)
     end
 
-    exclude_fields_attributes = exclude_fields.inject({}) do |hash, element|
-      if element.include?("__")
-        key, value = element.split("__")
-        hash[key] ||= []
-        hash[key] << value
+    exclude_fields_attributes = []
+    if exclude_fields.any?
+      exclude_fields_attributes = exclude_fields.inject({}) do |hash, element|
+        if element.include?("__")
+          key, value = element.split("__")
+          hash[key] ||= []
+          hash[key] << value
+        end
+        hash
       end
-      hash
     end
 
     respond_to do |format|
