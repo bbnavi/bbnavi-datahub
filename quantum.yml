@@ -94,7 +94,7 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_PASSWORT: bbnavihub
       POSTGRES_USER: bbnavihub
-    image: postgis/postgis:10-3.1
+    image: postgis/postgis:15-3.3
     networks:
       adminer:
         aliases:
@@ -104,7 +104,7 @@ services:
         - bbnavi-datahub-postgresql-staging
       default: {}
     volumes:
-    - datahub_db_staging:/var/lib/postgresql/data:rw
+    - datahub_db_15_staging:/var/lib/postgresql/data:rw
   delayed_job:
     command: bin/delayed_job run
     configs:
@@ -188,9 +188,9 @@ services:
 version: '3.7'
 volumes:
   assets: {}
-  datahub_db_staging:
+  datahub_db_15_staging:
     external: true
-    name: datahub_db_staging
+    name: datahub_db_15_staging
   redis_data_staging:
     external: true
     name: redis_data_staging

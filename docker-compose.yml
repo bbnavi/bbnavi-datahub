@@ -138,7 +138,7 @@ services:
         - node.hostname == node-001.tpwd-bb-navi
 
 volumes:
-  datahub_db_staging:
+  datahub_db_15_staging:
     external: true
   redis_data_staging:
     external: true
