@@ -117,7 +117,7 @@ services:
 
   db:
     # image: 'postgres:10.3-alpine'
-    image: 'postgis/postgis:10-3.1'
+    image: 'postgis/postgis:15-3.3'
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_USER: bbnavihub
@@ -129,7 +129,7 @@ services:
         aliases:
           - bbnavi-datahub-postgresql-staging
     volumes:
-      - datahub_db_staging:/var/lib/postgresql/data
+      - datahub_db_15_staging:/var/lib/postgresql/data
     deploy:
       restart_policy:
         condition: on-failure
