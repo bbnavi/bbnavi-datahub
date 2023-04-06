@@ -2,10 +2,12 @@
 
 module Types
   class QueryTypes::DashboardType < Types::BaseObject
-    field :points_of_interest, GraphQL::Types::JSON, null: true
-    field :points_of_interest_for_categories, GraphQL::Types::JSON, null: true
-    field :event_records, GraphQL::Types::JSON, null: true
-    field :news_items, GraphQL::Types::JSON, null: true
+    field :point_of_interest, GraphQL::Types::JSON, null: true
+    field :point_of_interest_category, GraphQL::Types::JSON, null: true
+    field :event_record, GraphQL::Types::JSON, null: true
+    # field :event_record_category, GraphQL::Types::JSON, null: true
+    field :news_item, GraphQL::Types::JSON, null: true
+    # field :news_item_category, GraphQL::Types::JSON, null: true
 
     def points_of_interest
       pois = PointOfInterest.filtered_for_current_user(context[:current_user])
