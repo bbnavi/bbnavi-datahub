@@ -1,3 +1,8 @@
-FROM urbica/martin
+FROM ghcr.io/maplibre/martin:v0.8.1
 
-COPY docker/martin_config.yml /martin_config.yml
+COPY docker/martin_config.yml /config/config.yml
+
+RUN apk add --no-cache curl
+HEALTHCHECK \
+  --interval=5s --timeout=3s --retries=3 --start-period=3s \
+  CMD curl -fsSLI "http://localhost:3000/health" || exit 1

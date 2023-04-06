@@ -1,378 +1,222 @@
----
 # The socket address to bind [default: 0.0.0.0:3000]
 listen_addresses: '0.0.0.0:5000'
 
-# Database connection string
-connection_string: 'postgres://bbnavihub@bbnavi-datahub-postgresql/bbnavihub'
+postgres:
+  # Database connection string
+  connection_string: 'postgres://bbnavihub@bbnavi-datahub-postgresql/bbnavihub'
 
-# Maximum connections pool size [default: 20]
-pool_size: 20
+  # disable automatic discovery of tables and functions
+  auto_publish: false
 
-# Connection keep alive timeout [default: 75]
-keep_alive: 75
+  # Associative arrays of table sources
+  table_sources:
+    public.poi_coords:
+      # Table source id (required)
+      id: public.poi_coords
 
-# Number of web server workers
-worker_processes: 8
+      # Table schema (required)
+      schema: public
 
-# Enable watch mode
-watch: false
+      # Table name (required)
+      table: poi_coords
 
-# Trust invalid certificates. This introduces significant vulnerabilities, and should only be used as a last resort.
-danger_accept_invalid_certs: false
+      # Geometry SRID (required)
+      srid: 4326
 
-# Associative arrays of table sources
-table_sources:
-  public.poi_coords:
-    # Table source id (required)
-    id: public.poi_coords
+      # Geometry column name (required)
+      geometry_column: coords
 
-    # Table schema (required)
-    schema: public
+      # Feature id column name
+      id_column: id
 
-    # Table name (required)
-    table: poi_coords
+      # An integer specifying the minimum zoom level
+      minzoom: 0
 
-    # Geometry SRID (required)
-    srid: 4326
+      # An integer specifying the maximum zoom level. MUST be >= minzoom
+      maxzoom: 30
 
-    # Geometry column name (required)
-    geometry_column: coords
+      # List of columns, that should be encoded as tile properties (required)
+      properties:
+        id: int8
+        name: string
+        svg_icon: string
+        tag_name: string
 
-    # Feature id column name
-    id_column: id
+    public.poi_coords_e_bike_charging_stations:
+      # Table source id (required)
+      id: public.poi_coords_e_bike_charging_stations
 
-    # An integer specifying the minimum zoom level
-    minzoom: 0
+      # Table schema (required)
+      schema: public
 
-    # An integer specifying the maximum zoom level. MUST be >= minzoom
-    maxzoom: 30
+      # Table name (required)
+      table: poi_coords_e_bike_charging_stations
 
-    # The maximum extent of available map tiles. Bounds MUST define an area
-    # covered by all zoom levels. The bounds are represented in WGS:84
-    # latitude and longitude values, in the order left, bottom, right, top.
-    # Values may be integers or floating point numbers.
-    bounds: [-180.0, -90.0, 180.0, 90.0]
+      # Geometry SRID (required)
+      srid: 4326
 
-    # Tile extent in tile coordinate space
-    extent: 4096
+      # Geometry column name (required)
+      geometry_column: coords
 
-    # Buffer distance in tile coordinate space to optionally clip geometries
-    buffer: 64
+      # An integer specifying the minimum zoom level
+      minzoom: 0
 
-    # Boolean to control if geometries should be clipped or encoded as is
-    clip_geom: true
+      # An integer specifying the maximum zoom level. MUST be >= minzoom
+      maxzoom: 30
 
-    # Geometry type
-    geometry_type: GEOMETRY
+      # List of columns, that should be encoded as tile properties (required)
+      properties:
+        id: string
+        datahub_id: int8
+        name: string
+        svg_icon: string
+        tag_name: string
 
-    # List of columns, that should be encoded as tile properties (required)
-    properties:
-      id: int8
-      name: string
-      svg_icon: string
-      tag_name: string
+    public.poi_coords_e_bike_rentals:
+      # Table source id (required)
+      id: public.poi_coords_e_bike_rentals
 
-  public.poi_coords_e_bike_charging_stations:
-    # Table source id (required)
-    id: public.poi_coords_e_bike_charging_stations
+      # Table schema (required)
+      schema: public
 
-    # Table schema (required)
-    schema: public
+      # Table name (required)
+      table: poi_coords_e_bike_rentals
 
-    # Table name (required)
-    table: poi_coords_e_bike_charging_stations
+      # Geometry SRID (required)
+      srid: 4326
 
-    # Geometry SRID (required)
-    srid: 4326
+      # Geometry column name (required)
+      geometry_column: coords
 
-    # Geometry column name (required)
-    geometry_column: coords
+      # An integer specifying the minimum zoom level
+      minzoom: 0
 
-    # Feature id column name
-    id_column: ~
+      # An integer specifying the maximum zoom level. MUST be >= minzoom
+      maxzoom: 30
 
-    # An integer specifying the minimum zoom level
-    minzoom: 0
+      # List of columns, that should be encoded as tile properties (required)
+      properties:
+        id: string
+        datahub_id: int8
+        name: string
+        svg_icon: string
+        tag_name: string
 
-    # An integer specifying the maximum zoom level. MUST be >= minzoom
-    maxzoom: 30
+    public.poi_coords_bike_rentals:
+      # Table source id (required)
+      id: public.poi_coords_bike_rentals
 
-    # The maximum extent of available map tiles. Bounds MUST define an area
-    # covered by all zoom levels. The bounds are represented in WGS:84
-    # latitude and longitude values, in the order left, bottom, right, top.
-    # Values may be integers or floating point numbers.
-    bounds: [-180.0, -90.0, 180.0, 90.0]
+      # Table schema (required)
+      schema: public
 
-    # Tile extent in tile coordinate space
-    extent: 4096
+      # Table name (required)
+      table: poi_coords_bike_rentals
 
-    # Buffer distance in tile coordinate space to optionally clip geometries
-    buffer: 64
+      # Geometry SRID (required)
+      srid: 4326
 
-    # Boolean to control if geometries should be clipped or encoded as is
-    clip_geom: true
+      # Geometry column name (required)
+      geometry_column: coords
 
-    # Geometry type
-    geometry_type: GEOMETRY
+      # An integer specifying the minimum zoom level
+      minzoom: 0
 
-    # List of columns, that should be encoded as tile properties (required)
-    properties:
-      id: string
-      datahub_id: int8
-      name: string
-      svg_icon: string
-      tag_name: string
+      # An integer specifying the maximum zoom level. MUST be >= minzoom
+      maxzoom: 30
 
-  public.poi_coords_e_bike_rentals:
-    # Table source id (required)
-    id: public.poi_coords_e_bike_rentals
+      # List of columns, that should be encoded as tile properties (required)
+      properties:
+        id: string
+        datahub_id: int8
+        name: string
+        svg_icon: string
+        tag_name: string
 
-    # Table schema (required)
-    schema: public
+    public.poi_coords_bike_repair_shops:
+      # Table source id (required)
+      id: public.poi_coords_bike_repair_shops
 
-    # Table name (required)
-    table: poi_coords_e_bike_rentals
+      # Table schema (required)
+      schema: public
 
-    # Geometry SRID (required)
-    srid: 4326
+      # Table name (required)
+      table: poi_coords_bike_repair_shops
 
-    # Geometry column name (required)
-    geometry_column: coords
+      # Geometry SRID (required)
+      srid: 4326
 
-    # Feature id column name
-    id_column: ~
+      # Geometry column name (required)
+      geometry_column: coords
 
-    # An integer specifying the minimum zoom level
-    minzoom: 0
+      # An integer specifying the minimum zoom level
+      minzoom: 0
 
-    # An integer specifying the maximum zoom level. MUST be >= minzoom
-    maxzoom: 30
+      # An integer specifying the maximum zoom level. MUST be >= minzoom
+      maxzoom: 30
 
-    # The maximum extent of available map tiles. Bounds MUST define an area
-    # covered by all zoom levels. The bounds are represented in WGS:84
-    # latitude and longitude values, in the order left, bottom, right, top.
-    # Values may be integers or floating point numbers.
-    bounds: [-180.0, -90.0, 180.0, 90.0]
+      # List of columns, that should be encoded as tile properties (required)
+      properties:
+        id: string
+        datahub_id: int8
+        name: string
+        svg_icon: string
+        tag_name: string
 
-    # Tile extent in tile coordinate space
-    extent: 4096
+    public.poi_coords_rideshare_points:
+      # Table source id (required)
+      id: public.poi_coords_rideshare_points
 
-    # Buffer distance in tile coordinate space to optionally clip geometries
-    buffer: 64
+      # Table schema (required)
+      schema: public
 
-    # Boolean to control if geometries should be clipped or encoded as is
-    clip_geom: true
+      # Table name (required)
+      table: poi_coords_rideshare_points
 
-    # Geometry type
-    geometry_type: GEOMETRY
+      # Geometry SRID (required)
+      srid: 4326
 
-    # List of columns, that should be encoded as tile properties (required)
-    properties:
-      id: string
-      datahub_id: int8
-      name: string
-      svg_icon: string
-      tag_name: string
+      # Geometry column name (required)
+      geometry_column: coords
 
-  public.poi_coords_bike_rentals:
-    # Table source id (required)
-    id: public.poi_coords_bike_rentals
+      # An integer specifying the minimum zoom level
+      minzoom: 0
 
-    # Table schema (required)
-    schema: public
+      # An integer specifying the maximum zoom level. MUST be >= minzoom
+      maxzoom: 30
 
-    # Table name (required)
-    table: poi_coords_bike_rentals
+      # List of columns, that should be encoded as tile properties (required)
+      properties:
+        id: string
+        datahub_id: int8
+        name: string
+        svg_icon: string
 
-    # Geometry SRID (required)
-    srid: 4326
+  function_sources:
+    public.poi_coords_for_category:
+      # Table source id (required)
+      id: public.poi_coords_for_category
 
-    # Geometry column name (required)
-    geometry_column: coords
+      # Table schema (required)
+      schema: public
 
-    # Feature id column name
-    id_column: ~
+      # Function name (required)
+      function: poi_coords_for_category
 
-    # An integer specifying the minimum zoom level
-    minzoom: 0
+      # Geometry SRID (required)
+      srid: 4326
 
-    # An integer specifying the maximum zoom level. MUST be >= minzoom
-    maxzoom: 30
+      # Geometry column name (required)
+      geometry_column: coords
 
-    # The maximum extent of available map tiles. Bounds MUST define an area
-    # covered by all zoom levels. The bounds are represented in WGS:84
-    # latitude and longitude values, in the order left, bottom, right, top.
-    # Values may be integers or floating point numbers.
-    bounds: [-180.0, -90.0, 180.0, 90.0]
+      # An integer specifying the minimum zoom level
+      minzoom: 0
 
-    # Tile extent in tile coordinate space
-    extent: 4096
+      # An integer specifying the maximum zoom level. MUST be >= minzoom
+      maxzoom: 30
 
-    # Buffer distance in tile coordinate space to optionally clip geometries
-    buffer: 64
-
-    # Boolean to control if geometries should be clipped or encoded as is
-    clip_geom: true
-
-    # Geometry type
-    geometry_type: GEOMETRY
-
-    # List of columns, that should be encoded as tile properties (required)
-    properties:
-      id: string
-      datahub_id: int8
-      name: string
-      svg_icon: string
-      tag_name: string
-
-  public.poi_coords_bike_repair_shops:
-    # Table source id (required)
-    id: public.poi_coords_bike_repair_shops
-
-    # Table schema (required)
-    schema: public
-
-    # Table name (required)
-    table: poi_coords_bike_repair_shops
-
-    # Geometry SRID (required)
-    srid: 4326
-
-    # Geometry column name (required)
-    geometry_column: coords
-
-    # Feature id column name
-    id_column: ~
-
-    # An integer specifying the minimum zoom level
-    minzoom: 0
-
-    # An integer specifying the maximum zoom level. MUST be >= minzoom
-    maxzoom: 30
-
-    # The maximum extent of available map tiles. Bounds MUST define an area
-    # covered by all zoom levels. The bounds are represented in WGS:84
-    # latitude and longitude values, in the order left, bottom, right, top.
-    # Values may be integers or floating point numbers.
-    bounds: [-180.0, -90.0, 180.0, 90.0]
-
-    # Tile extent in tile coordinate space
-    extent: 4096
-
-    # Buffer distance in tile coordinate space to optionally clip geometries
-    buffer: 64
-
-    # Boolean to control if geometries should be clipped or encoded as is
-    clip_geom: true
-
-    # Geometry type
-    geometry_type: GEOMETRY
-
-    # List of columns, that should be encoded as tile properties (required)
-    properties:
-      id: string
-      datahub_id: int8
-      name: string
-      svg_icon: string
-      tag_name: string
-
-  public.poi_coords_rideshare_points:
-    # Table source id (required)
-    id: public.poi_coords_rideshare_points
-
-    # Table schema (required)
-    schema: public
-
-    # Table name (required)
-    table: poi_coords_rideshare_points
-
-    # Geometry SRID (required)
-    srid: 4326
-
-    # Geometry column name (required)
-    geometry_column: coords
-
-    # Feature id column name
-    id_column: ~
-
-    # An integer specifying the minimum zoom level
-    minzoom: 0
-
-    # An integer specifying the maximum zoom level. MUST be >= minzoom
-    maxzoom: 30
-
-    # The maximum extent of available map tiles. Bounds MUST define an area
-    # covered by all zoom levels. The bounds are represented in WGS:84
-    # latitude and longitude values, in the order left, bottom, right, top.
-    # Values may be integers or floating point numbers.
-    bounds: [-180.0, -90.0, 180.0, 90.0]
-
-    # Tile extent in tile coordinate space
-    extent: 4096
-
-    # Buffer distance in tile coordinate space to optionally clip geometries
-    buffer: 64
-
-    # Boolean to control if geometries should be clipped or encoded as is
-    clip_geom: true
-
-    # Geometry type
-    geometry_type: GEOMETRY
-
-    # List of columns, that should be encoded as tile properties (required)
-    properties:
-      id: string
-      datahub_id: int8
-      name: string
-      svg_icon: string
-
-function_sources:
-  public.poi_coords_for_category:
-    # Table source id (required)
-    id: public.poi_coords_for_category
-
-    # Table schema (required)
-    schema: public
-
-    # Function name (required)
-    function: poi_coords_for_category
-
-    # Geometry SRID (required)
-    srid: 4326
-
-    # Geometry column name (required)
-    geometry_column: coords
-
-    # Feature id column name
-    id_column: ~
-
-    # An integer specifying the minimum zoom level
-    minzoom: 0
-
-    # An integer specifying the maximum zoom level. MUST be >= minzoom
-    maxzoom: 30
-
-    # The maximum extent of available map tiles. Bounds MUST define an area
-    # covered by all zoom levels. The bounds are represented in WGS:84
-    # latitude and longitude values, in the order left, bottom, right, top.
-    # Values may be integers or floating point numbers.
-    bounds: [-180.0, -90.0, 180.0, 90.0]
-
-    # Tile extent in tile coordinate space
-    extent: 4096
-
-    # Buffer distance in tile coordinate space to optionally clip geometries
-    buffer: 64
-
-    # Boolean to control if geometries should be clipped or encoded as is
-    clip_geom: true
-
-    # Geometry type
-    geometry_type: GEOMETRY
-
-    # List of columns, that should be encoded as tile properties (required)
-    properties:
-      id: string
-      datahub_id: int8
-      name: string
-      svg_icon: string
+      # List of columns, that should be encoded as tile properties (required)
+      properties:
+        id: string
+        datahub_id: int8
+        name: string
+        svg_icon: string
