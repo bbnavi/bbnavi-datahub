@@ -2,12 +2,14 @@
 
 module Types
   class QueryTypes::DashboardType < Types::BaseObject
-    field :points_of_interest, GraphQL::Types::JSON, null: true
-    field :points_of_interest_for_categories, GraphQL::Types::JSON, null: true
-    field :event_records, GraphQL::Types::JSON, null: true
-    field :news_items, GraphQL::Types::JSON, null: true
+    field :point_of_interest, GraphQL::Types::JSON, null: true
+    field :point_of_interest_category, GraphQL::Types::JSON, null: true
+    field :event_record, GraphQL::Types::JSON, null: true
+    # field :event_record_category, GraphQL::Types::JSON, null: true
+    field :news_item, GraphQL::Types::JSON, null: true
+    # field :news_item_category, GraphQL::Types::JSON, null: true
 
-    def points_of_interest
+    def point_of_interest
       pois = PointOfInterest.filtered_for_current_user(context[:current_user])
       {
         total_count: pois.count,
@@ -15,7 +17,7 @@ module Types
       }
     end
 
-    def points_of_interest_for_categories
+    def point_of_interest_category
       category_meta_info = []
 
       category_ids = context[:current_user].try(:data_provider).try(:roles).fetch("role_point_of_interest_category_ids")
@@ -30,7 +32,7 @@ module Types
       category_meta_info
     end
 
-    def event_records
+    def event_record
       all_events = EventRecord.upcoming(context[:current_user])
       {
         total_count: all_events.count,
@@ -38,7 +40,7 @@ module Types
       }
     end
 
-    def news_items
+    def news_item
       all_news_items = NewsItem.filtered_for_current_user(context[:current_user])
       {
         total_count: all_news_items.count,
