@@ -1,15 +1,15 @@
-FROM ruby:2.6.3-stretch
+FROM ruby:2.7-bullseye
 
-RUN apt-get update
-RUN apt-get install -y curl apt-transport-https ca-certificates \
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash \
-RUN apt-get install -y nodejs \
-RUN apt-get install -y yarn \
-RUN apt-get install -y wget \
-RUN apt-get install -y libpq-dev \
-RUN apt-get clean \
+RUN apt update
+RUN apt install -y curl apt-transport-https ca-certificates
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN apt install -y nodejs
+RUN apt install -y yarn
+RUN apt install -y wget
+RUN apt install -y libpq-dev
+RUN apt clean
 RUN rm -rf /var/lib/apt/lists/* /usr/src/*
 
 RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc
@@ -25,7 +25,8 @@ WORKDIR /app
 
 COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler
-RUN bundle install --without development test
+RUN bundle config set --local without 'development test'
+RUN bundle install
 
 COPY . /app
 RUN chmod +x bin/start-cron.sh
