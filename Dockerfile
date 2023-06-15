@@ -1,16 +1,16 @@
 FROM ruby:2.6.3-stretch
 
-RUN apt-get update \
-  && apt-get install -y curl apt-transport-https ca-certificates \
-  && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-  && curl -sL https://deb.nodesource.com/setup_10.x | bash \
-  && apt-get install -y nodejs \
-  && apt-get install -y yarn \
-  && apt-get install -y wget \
-  && apt-get install -y libpq-dev \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /usr/src/*
+RUN apt-get update
+RUN apt-get install -y curl apt-transport-https ca-certificates \
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash \
+RUN apt-get install -y nodejs \
+RUN apt-get install -y yarn \
+RUN apt-get install -y wget \
+RUN apt-get install -y libpq-dev \
+RUN apt-get clean \
+RUN rm -rf /var/lib/apt/lists/* /usr/src/*
 
 RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc
 RUN chmod +x mc
