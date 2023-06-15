@@ -22,7 +22,9 @@ module Types
 
       category_ids = context[:current_user].try(:data_provider).try(:roles).fetch("role_point_of_interest_category_ids")
       category_ids.each do |category_id|
-        pois = PointOfInterest.filtered_for_current_user(context[:current_user]).by_category(category_id)
+        sub_category_ids = Category.find_by(id: category_id).subtree_ids.compact
+        pois = PointOfInterest.filtered_for_current_user(context[:current_user]).by_category(sub_category_ids)
+
         category_meta_info << {
           category_id: category_id,
           total_count: pois.count,
