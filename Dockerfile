@@ -1,4 +1,4 @@
-FROM ruby:2.7-bullseye
+FROM ruby:2.6.10-bullseye
 
 RUN apt update
 RUN apt install -y curl apt-transport-https ca-certificates
@@ -33,7 +33,7 @@ RUN chmod +x bin/start-cron.sh
 COPY docker/unicorn.rb /app/config/unicorn.rb
 COPY docker/database.yml /app/config/database.yml
 
-RUN bundle exec rake DATABASE_URL=nulldb://user:pass@127.0.0.1/dbname assets:precompile
+# RUN bundle exec rake DATABASE_URL=nulldb://user:pass@127.0.0.1/dbname assets:precompile
 
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
 
