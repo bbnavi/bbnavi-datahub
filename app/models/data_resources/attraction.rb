@@ -37,8 +37,9 @@ class Attraction < ApplicationRecord
   acts_as_taggable
 
   accepts_nested_attributes_for :web_urls, reject_if: ->(attr) { attr[:url].blank? }
+  accepts_nested_attributes_for :operating_company, reject_if: ->(attr) { attr[:name].blank? }
   accepts_nested_attributes_for :addresses, :contact, :media_contents,
-                                :accessibility_information, :operating_company,
+                                :accessibility_information,
                                 :data_provider, :certificates,
                                 :regions, :location
 
