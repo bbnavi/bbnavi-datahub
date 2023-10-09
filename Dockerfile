@@ -1,6 +1,7 @@
 FROM ruby:2.6.3-stretch
 
-RUN apt-get update \
+RUN sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list \
+  && apt-get update \
   && apt-get install -y curl apt-transport-https ca-certificates \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
