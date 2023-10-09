@@ -1,7 +1,9 @@
 FROM ruby:2.6.3-stretch
 
-RUN sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list \
+RUN sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list \                                                                                                                    
+  && sed -i s/security.debian.org/archive.debian.org/g /etc/apt/sources.list \                                                                                                              
   && sed -i '/stretch-updates/d' /etc/apt/sources.list \
+  && sed -i 's/stable\/updates/stable-security\/updates/' /etc/apt/sources.list \ 
   && apt-get update \
   && apt-get install -y curl apt-transport-https ca-certificates \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
