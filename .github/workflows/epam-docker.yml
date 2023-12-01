@@ -11,7 +11,7 @@ on:
 
 env:
   # Use docker.io for Docker Hub if empty
-  REGISTRY: gitea.citygo.es
+  REGISTRY: git.bbnavi.de
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
