@@ -13,7 +13,8 @@ on:
 jobs:
   build-tileserver-image:
     runs-on: ubuntu-latest
-    env: DOCKER_TAG: martin
+    env: 
+      DOCKER_TAG: martin
     steps:
     - uses: actions/checkout@v2
     - uses: docker/setup-buildx-action@v1
