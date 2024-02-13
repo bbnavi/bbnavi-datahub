@@ -11,24 +11,6 @@ on:
     branches: [ master, develop ]
 
 jobs:
-  build-tileserver-image:
-    runs-on: ubuntu-latest
-    env: 
-      DOCKER_TAG: martin
-    steps:
-    - uses: actions/checkout@v2
-    - uses: docker/setup-buildx-action@v1
-    - uses: docker/login-action@v1
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - id: docker_build
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        file: Dockerfile.martin
-        tags: ghcr.io/bbnavi/tileserver:latest
   build-datahub-image:
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +25,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ghcr.io/bbnavi/datahub:latest
+        tags: ghcr.io/bbnavi/datahub:develop
   # deploy:
   #   runs-on: ubuntu-latest
   #   needs:
