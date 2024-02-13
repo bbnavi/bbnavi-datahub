@@ -1,0 +1,128 @@
+listen_addresses: 0.0.0.0:3333
+postgres:
+  connection_string: postgres://bbnavihub@bbnavi-datahub-postgresql/bbnavihub
+  default_srid: 4326
+  auto_publish: true
+  tables:
+    geo_locations:
+      schema: public
+      table: geo_locations
+      srid: 4326
+      geometry_column: coords
+      bounds:
+      - 0.0
+      - 0.0
+      - 54.1444922
+      - 54.144287283797
+      extent: 4096
+      buffer: 64
+      clip_geom: true
+      geometry_type: POINT
+      properties:
+        created_at: timestamp
+        geo_locateable_id: int8
+        geo_locateable_type: varchar
+        id: int8
+        latitude: float8
+        longitude: float8
+        updated_at: timestamp
+    poi_coords_bike_rentals:
+      schema: public
+      table: poi_coords_bike_rentals
+      srid: 4326
+      geometry_column: coords
+      bounds:
+      - 11.477133078359
+      - 51.49350891599
+      - 14.717933318575
+      - 53.306700515363
+      extent: 4096
+      buffer: 64
+      clip_geom: true
+      geometry_type: POINT
+      properties:
+        datahub_id: int8
+        id: text
+        name: varchar
+        svg_icon: text
+        tag_name: varchar
+    poi_coords_bike_repair_shops:
+      schema: public
+      table: poi_coords_bike_repair_shops
+      srid: 4326
+      geometry_column: coords
+      bounds:
+      - 11.947724187192
+      - 51.429344843651
+      - 14.710137574286
+      - 53.21363563856
+      extent: 4096
+      buffer: 64
+      clip_geom: true
+      geometry_type: POINT
+      properties:
+        datahub_id: int8
+        id: text
+        name: varchar
+        svg_icon: text
+        tag_name: varchar
+    poi_coords_e_bike_charging_stations:
+      schema: public
+      table: poi_coords_e_bike_charging_stations
+      srid: 4326
+      geometry_column: coords
+      bounds:
+      - 11.755362567295
+      - 51.513081460709
+      - 14.673737103337
+      - 53.319657081223
+      extent: 4096
+      buffer: 64
+      clip_geom: true
+      geometry_type: POINT
+      properties:
+        datahub_id: int8
+        id: text
+        name: varchar
+        svg_icon: text
+        tag_name: varchar
+    poi_coords_e_bike_rentals:
+      schema: public
+      table: poi_coords_e_bike_rentals
+      srid: 4326
+      geometry_column: coords
+      bounds:
+      - 11.477133078359
+      - 51.457416340888
+      - 14.422965947814
+      - 53.21363563856
+      extent: 4096
+      buffer: 64
+      clip_geom: true
+      geometry_type: POINT
+      properties:
+        datahub_id: int8
+        id: text
+        name: varchar
+        svg_icon: text
+        tag_name: varchar
+    poi_coords_rideshare_points:
+      schema: public
+      table: poi_coords_rideshare_points
+      srid: 4326
+      geometry_column: coords
+      bounds:
+      - 13.017787917232486
+      - 52.24631407191235
+      - 14.113301
+      - 53.186564
+      extent: 4096
+      buffer: 64
+      clip_geom: true
+      geometry_type: POINT
+      properties:
+        datahub_id: int8
+        id: text
+        name: varchar
+        svg_icon: text
+  functions: {}
