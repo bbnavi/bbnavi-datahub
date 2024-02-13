@@ -15,7 +15,7 @@ default: &default
   pool: 5
   username: bbnavihub
   password: bbnavihub
-  host: bbnavi-datahub-postgresql-staging
+  host: bbnavi-datahub-postgresql
 
 
 development:
